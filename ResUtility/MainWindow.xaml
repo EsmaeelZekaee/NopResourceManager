@@ -1,0 +1,245 @@
+﻿<Fluent:RibbonWindow x:Class="ResUtility.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+xmlns:fa="http://schemas.fontawesome.io/icons"
+                     xmlns:fa1="http://schemas.fontawesome.io/icons/"
+                     DataContext="{Binding RelativeSource={RelativeSource Self}}"
+ Title="Resource Utility" Width="800" Height="600" Loaded="RibbonWindow_Loaded" >
+    <Window.Resources>
+        <BitmapImage x:Key="Open" UriSource="Images\add-file-32.png"></BitmapImage>
+        <BitmapImage x:Key="Resources" UriSource="Images\language-32.png"></BitmapImage>
+        <BitmapImage x:Key="Search" UriSource="Images\document-32.png"></BitmapImage>
+
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="400"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+
+
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                             Color="Red"/>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="24"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Fluent:Ribbon>
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage>
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="Save">
+                            <ListBox  ItemsSource="{Binding Resources}" Margin="40" HorizontalContentAlignment="Stretch">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                                            <Button Width="24" Height="24" Tag="{Binding Path=.}" Background="Transparent" x:Name="CloseDocument" Click="CloseDocument_OnClick" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                <fa1:FontAwesome Icon="Close" ></fa1:FontAwesome>
+                                            </Button>
+                                            <Label Content="{Binding Name}"></Label>
+                                            <Label Content="{Binding FileInfo.FullName}"></Label>
+                                            <WrapPanel>
+                                                <Button Tag="{Binding Guid}" MinWidth="100" Padding="2" x:Name="Save" Click="Save_Click" Margin="2" Content="Save"></Button>
+                                                <Button Tag="{Binding Guid}" MinWidth="100" Padding="2" x:Name="SaveAs" Click="SaveAs_Click"  Margin="2" Content="Save as"></Button>
+                                                <Button Tag="{Binding Guid}" Padding="2" x:Name="UpdateDatabase" Click="UpdateDatabase_Click"  Margin="2" Content="UpdateDatabase"></Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Fluent:BackstageTabItem>
+                        <Fluent:Button Header="Exit" x:Name="Exit" Click="Exit_Click"></Fluent:Button>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+            <Fluent:RibbonTabItem Header="Home">
+                <Fluent:RibbonGroupBox Header="Resources">
+                    <Fluent:Button LargeIcon="{StaticResource Open}" x:Name="AddResource" Click="AddResource_Click">Add</Fluent:Button>
+                    <Fluent:DropDownButton LargeIcon="{StaticResource Resources}" Header="Resources">
+                        <Fluent:Gallery x:Name="Resources"  SelectionChanged="Resources_SelectionChanged">
+                            <Fluent:Gallery.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding Name}"></Label>
+                                </DataTemplate>
+                            </Fluent:Gallery.ItemTemplate>
+                        </Fluent:Gallery>
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="View">
+                    <WrapPanel Orientation="Horizontal">
+                        <Fluent:Button Size="Small"  Height="24" Width="24"  x:Name="RtlButton" Click="RtlButton_Click">
+                            <Fluent:Button.ToolTip>
+                                <Label>RTL</Label>
+                            </Fluent:Button.ToolTip>
+                            <Fluent:Button.Icon>
+                                <fa1:ImageAwesome  Icon="AlignRight"></fa1:ImageAwesome>
+                            </Fluent:Button.Icon>
+                        </Fluent:Button>
+                        <Fluent:Button  Size="Small" Height="24" Width="24"  x:Name="LtrButton"  Click="LtrButton_Click">
+                            <Fluent:Button.ToolTip>
+                                <Label>LTR</Label>
+                            </Fluent:Button.ToolTip>
+                            <Fluent:Button.Icon>
+                                <fa1:ImageAwesome Icon="AlignLeft" ></fa1:ImageAwesome>
+                            </Fluent:Button.Icon>
+                        </Fluent:Button>
+                    </WrapPanel>
+
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Navigation">
+                    <WrapPanel Margin="5">
+                        <TextBox x:Name="GoTextBox" Text="{Binding SelectedIndex}" Width="100" />
+                        <Button x:Name="GoButton" Click="GoButton_Click" Content="Go" />
+                    </WrapPanel>
+                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox Header="Value">
+                    <WrapPanel Orientation="Horizontal">
+                        <Fluent:Button Size="Middle" fa1:Awesome.Content="Undo" x:Name="UndoButton" Click="UndoButton_Click">
+                            <Fluent:Button.Icon>
+                                <fa1:ImageAwesome Icon="Undo" ></fa1:ImageAwesome>
+                            </Fluent:Button.Icon>
+                        </Fluent:Button>
+                        <Fluent:Button Size="Middle" fa1:Awesome.Content="Undo" x:Name="RedButton" Click="RedButton_Click">
+                            <Fluent:Button.Icon>
+                                <fa1:ImageAwesome Icon="Undo" RenderTransformOrigin="0.5,0.5">
+                                    <fa1:ImageAwesome.RenderTransform>
+                                        <ScaleTransform ScaleX="-1" />
+                                    </fa1:ImageAwesome.RenderTransform>
+                                </fa1:ImageAwesome>
+                            </Fluent:Button.Icon>
+                        </Fluent:Button>
+                    </WrapPanel>
+                    <Fluent:Button Size="Small"  Height="24" Width="24" x:Name="ChangeButton" Tag="{Binding Name}" Click="ChangeButton_Click">
+                        <Fluent:Button.ToolTip>
+                            <Label>Change this value with other Resources specified recorde.</Label>
+                        </Fluent:Button.ToolTip>
+                        <Fluent:Button.Icon>
+                            <fa1:ImageAwesome  Icon="Exchange"></fa1:ImageAwesome>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button  Size="Small" Height="24"  Width="24" x:Name="TranslateButton" Tag="{Binding Name}" Click="TranslateButton_OnClick">
+                        <Fluent:Button.ToolTip>
+                            <Label>Change this value with other Resources specified recorde.</Label>
+                        </Fluent:Button.ToolTip>
+                        <Fluent:Button.Icon>
+                            <fa1:ImageAwesome  Icon="Language"></fa1:ImageAwesome>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                    <Fluent:Button  Size="Small" Height="24"  Width="24" x:Name="FixNames" Tag="{Binding Name}" Click="FixNames_Click">
+                        <Fluent:Button.ToolTip>
+                            <Label>Fix doublicated names</Label>
+                        </Fluent:Button.ToolTip>
+                        <Fluent:Button.Icon>
+                            <fa1:ImageAwesome  Icon="Magic"></fa1:ImageAwesome>
+                        </Fluent:Button.Icon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Text Encoding">
+                <Fluent:RibbonGroupBox Header="Encoding">
+                    <WrapPanel Margin="5">
+                        <Label>Encoding</Label>
+                        <Fluent:ComboBox Width="150" IsReadOnly="True" x:Name="Encodings">
+                            <Fluent:ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding Path=.}"></Label>
+                                </DataTemplate>
+                            </Fluent:ComboBox.ItemTemplate>
+                        </Fluent:ComboBox>
+                    </WrapPanel>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Remote Data">
+                <Fluent:RibbonGroupBox Header="Connection">
+                    <Fluent:Button Header="Conection" LargeIcon="{StaticResource Open}" Click="ConnectionButton_OnClick" x:Name="ConnectionButton">
+
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+            <Fluent:RibbonTabItem Header="Source Code">
+                <Fluent:RibbonGroupBox Header="Code Analyze">
+                    <Fluent:Button Header="Scan Srouce code" LargeIcon="{StaticResource Search}"   Click="ScanButton_Click" x:Name="ScanButton">
+                        <Fluent:Button.ToolTip>Scan Source code and find all resource keys.</Fluent:Button.ToolTip>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView Margin="2" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Name="LangItemsTree" ItemsSource="{Binding DefaultResource.Items}" SelectedItemChanged="ResourcesItemsTree_SelectedItemChanged">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Items, Mode=Default}">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                            <TextBlock Foreground="DarkBlue" Text="{Binding Name}" Visibility="{Binding HasChildren}" HorizontalAlignment="Stretch">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Tag="{Binding Path=.}" Header="Export Node" x:Name="ExportNode" Click="ExportNode_Click"></MenuItem>
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+                            </TextBlock>
+                            <TextBlock   Text="{Binding Path}" Visibility="{Binding FullPath}" HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <GridSplitter Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" 
+              VerticalAlignment="Stretch"
+              ShowsPreview="true" Grid.RowSpan="2"
+              Width="5"></GridSplitter>
+            <ListBox Margin="2" x:Name="LangItems" HorizontalAlignment="Stretch" 
+                     Grid.Row="1" Grid.Column="2"
+                      AlternationCount="{Binding Path=DefaultResource.LocaleResources.Count}"
+                     ItemsSource="{Binding DefaultResource.LocaleResources}" 
+                     SelectedIndex="{Binding SelectedIndex}"
+                     SelectionChanged="ResourcesItems_SelectionChanged" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical" >
+                            <WrapPanel Orientation="Horizontal" Grid.Row="0">
+                                <WrapPanel HorizontalAlignment="Right">
+                                    <TextBlock Foreground="Green">[</TextBlock>
+                                    <TextBlock Foreground="Green" Text="{Binding Index}"></TextBlock>
+                                    <TextBlock Foreground="Green">]</TextBlock>
+                                </WrapPanel>
+                                <TextBlock Foreground="DarkBlue" FontWeight="DemiBold" Text="{Binding Name}" Margin="2" VerticalAlignment="Top">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Text="{Binding Value}"></TextBlock>
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </WrapPanel>
+                            <TextBox  GotFocus="ValueEditor_GotFocus"  x:Name="ValueEditor" Text="{Binding Value}" 
+                                        Height="50" FlowDirection="{Binding FlowDirection}"
+                                      TextWrapping="Wrap"  
+                                      VerticalAlignment="Bottom">
+                                <TextBox.ToolTip>
+                                    <TextBlock Text="{Binding Value}"></TextBlock>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <StatusBar HorizontalAlignment="Stretch" Height="36" Grid.Row="3" VerticalAlignment="Top" >
+            <Label>Records</Label>
+            <TextBlock Text="{Binding DefaultResource.LocaleResources.Count}"></TextBlock>
+        </StatusBar>
+    </Grid>
+</Fluent:RibbonWindow>

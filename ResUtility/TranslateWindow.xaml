@@ -1,0 +1,36 @@
+﻿<Window x:Class="ResUtility.TranslateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ResUtility"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Height="373.162" Width="500"
+        Title="Translate" >
+    <Grid  Margin="10,20,10,10" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <WrapPanel  Width="480" Grid.Row="0" HorizontalAlignment="Left">
+            <Label Width="100">Text:</Label>
+            <TextBox Width="440" Height="100" x:Name="OrginalTextBox" x:FieldModifier="public" TextWrapping="Wrap" HorizontalAlignment="Stretch"></TextBox>
+        </WrapPanel>
+        <WrapPanel  Width="480" Grid.Row="1" HorizontalAlignment="Left">
+            <Label Width="100">Translate:</Label>
+            <TextBox Width="440" Height="100" Tag="{Binding ElementName=TranslatedTextBox, Path=Text, Mode=TwoWay}" x:Name="TranslatedTextBox" x:FieldModifier="public" TextWrapping="Wrap" HorizontalAlignment="Stretch"></TextBox>
+        </WrapPanel>
+        <WrapPanel  Grid.Row="2" HorizontalAlignment="Left" Margin="0,10,0,0">
+            <Button Width="50"  x:Name="OkeyButton" Click="OkeyButton_OnClick" Margin="2">
+                <fa:ImageAwesome Foreground="DarkGreen" Icon="Check" Width="24"></fa:ImageAwesome>
+            </Button>
+            <Button Width="50"    x:Name="CancelButton" Click="CancelButton_OnClick" Margin="2">
+                <fa:ImageAwesome Foreground="DarkRed" Icon="Close" Width="24"></fa:ImageAwesome>
+            </Button>
+            <Button Width="50"   x:Name="TranslateButton" Click="TranslateButton_OnClick" Margin="2">
+                <fa:ImageAwesome x:Name="LanguageImageAwesome" Foreground="DarkBlue"  Icon="Language" Width="24" SpinDuration="10" />
+            </Button>
+        </WrapPanel>
+    </Grid>
+</Window>
